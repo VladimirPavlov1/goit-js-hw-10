@@ -1,4 +1,5 @@
 import './css/styles.css';
+var debounce = require('lodash.debounce');
 
 const DEBOUNCE_DELAY = 300;
 
@@ -6,11 +7,11 @@ const DEBOUNCE_DELAY = 300;
 const BASE_URL='https://restcountries.com/v2/name/';
 const inputEl=document.getElementById('search-box');
 const listEl=document.querySelector('.country-list');
-console.log(listEl)
+console.dir(listEl)
 const divEl=document.querySelector('.country-info');
 
 
-inputEl.addEventListener('input',onInput)
+inputEl.addEventListener('input',onInput);
 
 function onInput(evt){
   
@@ -21,7 +22,9 @@ if(currentName.length<2){
     
 }
 
-fetchCountries(currentName).then(data=>createMarkup(data))
+fetchCountries(currentName).then(data=>console.log(data));
+fetchCountries(currentName).then(data=>createMarkupList(data));
+fetchCountries(currentName).then(data=> createMarkupDiv(data));
 
 console.dir(inputEl)
 }
@@ -41,7 +44,7 @@ function fetchCountries(name){
 console.log('hello')
 
 
-function createMarkup(arr){
+function createMarkupList(arr){
 const markUp =  arr.map(item=>{
     return `<li class='item'>
     <span class="flag"><img src="${item.flag}" alt=""></span>
@@ -50,4 +53,53 @@ const markUp =  arr.map(item=>{
 }).join('')
 
 listEl.innerHTML=markUp
+changeMarkup(listEl)
+
 }
+
+function createMarkupDiv(arr){
+    const markUpDiv =  arr.map(item=>{
+        return `<ul>
+        <li class='country-info__item'>
+            <span class="flag"><img src="${item.flag}" alt=""></span>
+            <h2 class='title'>${item.name}</h2>
+        </li>
+        <li class='country-info__item'>
+            <h3 class='subtitle'>Capital:</h3>
+            <p class='text'>${item.capital}</p>
+        </li>
+        <li class='country-info__item'>
+            <h3 class='subtitle'>Population:</h3>
+            <p class='text'>${item.population}</p>
+        </li>
+        <li class='country-info__item'>
+            <h3 class='subtitle'>Language</h2>
+            <p class='text'>${item.language}</p>
+        </li>
+
+        </ul>`
+    }).join('')
+    
+    divEl.innerHTML=markUpDiv
+    changeMarkupDiv(divEl)
+    }
+
+ function changeMarkup(count){
+    if(listEl.childElementCount===1){
+        listEl.classList.add('is-hidden')
+    }
+    else if(listEl.childElementCount>1){
+        listEl.classList.remove('is-hidden')
+    }
+    
+ }
+ function changeMarkupDiv(count){
+    if(divEl.childElementCount===1){
+        divEl.classList.add('show');
+        divEl.classList.remove('is-hidden')
+    }
+    else if(divEl.childElementCount>1){
+        divEl.classList.add('is-hidden')
+    }
+    
+ }
