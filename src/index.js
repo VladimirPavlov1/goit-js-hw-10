@@ -22,6 +22,11 @@ if(currentName.length===1){
     alert('Введіть більше сиволів');
     
 }
+else if(!currentName){
+    cleanerlistEl()
+    cleanerdivEl()
+    return
+}
 
 fetchCountries(currentName).then(data=>console.log(data));
 fetchCountries(currentName).then(data=>createMarkupList(data));
@@ -74,7 +79,7 @@ function createMarkupDiv(arr){
             <p class='text'>${item.population}</p>
         </li>
         <li class='country-info__item'>
-            <h3 class='subtitle'>Language</h2>
+            <h3 class='subtitle'>Language:</h2>
            
             <p class='text'>${item.name}</p>
            
@@ -91,7 +96,7 @@ function createMarkupDiv(arr){
     if(listEl.childElementCount===1){
         listEl.classList.add('is-hidden')
     }
-    else if(listEl.childElementCount>1){
+    else if(listEl.childElementCount>1||listEl.childElementCount<10){
         listEl.classList.remove('is-hidden')
     }
     
@@ -106,3 +111,10 @@ function createMarkupDiv(arr){
     }
     
  }
+
+function cleanerlistEl(){
+    listEl.remove()
+}
+function cleanerdivEl(){
+   divEl.remove()
+}
