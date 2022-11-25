@@ -1,4 +1,7 @@
 import './css/styles.css';
+
+import Notiflix from 'notiflix';
+
 var debounce = require('lodash.debounce');
 
 const DEBOUNCE_DELAY = 300;
@@ -19,7 +22,7 @@ function onInput(evt){
 const currentName = evt.target.value.trim();
 
 if(currentName.length===1){
-    alert('Введіть більше сиволів');
+    Notiflix.Notify.failure('Введіть більше символів');;
     
 }
 else if(!currentName){
@@ -43,7 +46,8 @@ function fetchCountries(name){
       }
       return resp.json()
     })
-    .catch(error=>alert('Даної країни не знайдено'))
+    .catch(error=>Notiflix.Notify.warning('Такої країни не існує')
+    )
     
 }
 
@@ -114,8 +118,8 @@ function createMarkupDiv(arr){
  }
 
 function cleanerlistEl(){
-    listEl.remove()
+    listEl.children.remove()
 }
 function cleanerdivEl(){
-   divEl.remove()
+   divEl.children.remove()
 }
