@@ -1,7 +1,7 @@
 import './css/styles.css';
 var debounce = require('lodash.debounce');
 
-const DEBOUNCE_DELAY = 300;
+const DEBOUNCE_DELAY = 3000;
 
 
 const BASE_URL='https://restcountries.com/v2/name/';
@@ -11,13 +11,14 @@ console.dir(listEl)
 const divEl=document.querySelector('.country-info');
 
 
-inputEl.addEventListener('input',onInput);
+inputEl.addEventListener('input',debounce(onInput,DEBOUNCE_DELAY));
+
 
 function onInput(evt){
   
-const currentName = evt.currentTarget.value;
+const currentName = evt.target.value.trim();
 
-if(currentName.length<2){
+if(currentName.length===1){
     alert('Введіть більше сиволів');
     
 }
@@ -74,7 +75,9 @@ function createMarkupDiv(arr){
         </li>
         <li class='country-info__item'>
             <h3 class='subtitle'>Language</h2>
-            <p class='text'>${item.language}</p>
+           
+            <p class='text'>${item.name}</p>
+           
         </li>
 
         </ul>`
