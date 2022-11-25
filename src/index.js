@@ -1,7 +1,7 @@
 import './css/styles.css';
 var debounce = require('lodash.debounce');
 
-const DEBOUNCE_DELAY = 3000;
+const DEBOUNCE_DELAY = 300;
 
 
 const BASE_URL='https://restcountries.com/v2/name/';
@@ -93,12 +93,13 @@ function createMarkupDiv(arr){
     }
 
  function changeMarkup(count){
-    if(listEl.childElementCount===1){
+    if(listEl.childElementCount===1||listEl.childElementCount>10){
         listEl.classList.add('is-hidden')
     }
     else if(listEl.childElementCount>1||listEl.childElementCount<10){
         listEl.classList.remove('is-hidden')
     }
+
     
  }
  function changeMarkupDiv(count){
