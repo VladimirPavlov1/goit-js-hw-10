@@ -21,19 +21,13 @@ function onInput(evt){
   
 const currentName = evt.target.value.trim();
 
-if(currentName.length===1){
-    Notiflix.Notify.failure('Введіть більше символів');;
-    
-}
-else if(!currentName){
-    cleanerlistEl()
-    cleanerdivEl()
-    return
-}
 
-fetchCountries(currentName).then(data=>console.log(data));
-fetchCountries(currentName).then(data=>createMarkupList(data));
-fetchCountries(currentName).then(data=> createMarkupDiv(data));
+fetchCountries(currentName).then(data=>{if(data.length>10){Notiflix.Notify.info('Too many matches found. Please enter a more specific name.')}else if(data.length<10&&data.length!==1){createMarkupList(data);divEl.classList.add('is-hidden')}else if(data.length===1){createMarkupDiv(data);listEl.classList.add('is-hidden');}}).catch(error=>{Notiflix.Notify.warning('Такої країни не існує'); if(!currentName){
+    cleanerdivEl();
+    cleanerlistEl();
+    return}}
+);
+
 
 console.dir(inputEl)
 }
@@ -46,8 +40,7 @@ function fetchCountries(name){
       }
       return resp.json()
     })
-    .catch(error=>Notiflix.Notify.warning('Такої країни не існує')
-    )
+   
     
 }
 
@@ -62,8 +55,7 @@ const markUp =  arr.map(item=>{
   </li>`
 }).join('')
 
-listEl.innerHTML=markUp
-changeMarkup(listEl)
+listEl.innerHTML=markUp;
 
 }
 
@@ -93,33 +85,15 @@ function createMarkupDiv(arr){
     }).join('')
     
     divEl.innerHTML=markUpDiv
-    changeMarkupDiv(divEl)
+  
     }
 
- function changeMarkup(count){
-    if(listEl.childElementCount===1||listEl.childElementCount>10){
-        listEl.classList.add('is-hidden')
-    }
-    else if(listEl.childElementCount>1||listEl.childElementCount<10){
-        listEl.classList.remove('is-hidden')
-    }
+ 
 
-    
- }
- function changeMarkupDiv(count){
-    if(divEl.childElementCount===1){
-        divEl.classList.add('show');
-        divEl.classList.remove('is-hidden')
-    }
-    else if(divEl.childElementCount>1){
-        divEl.classList.add('is-hidden')
-    }
-    
- }
 
 function cleanerlistEl(){
-    listEl.children.remove()
+    listEl.innerHTML=""
 }
 function cleanerdivEl(){
-   divEl.children.remove()
+   divEl.innerHTML=""
 }
