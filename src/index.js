@@ -22,7 +22,9 @@ function onInput(evt){
 const currentName = evt.target.value.trim();
 
 
-fetchCountries(currentName).then(data=>{if(data.length>10){Notiflix.Notify.info('Too many matches found. Please enter a more specific name.')}else if(data.length<10&&data.length!==1){createMarkupList(data);divEl.classList.add('is-hidden')}else if(data.length===1){createMarkupDiv(data);listEl.classList.add('is-hidden');}}).catch(error=>{Notiflix.Notify.warning('Такої країни не існує'); if(!currentName){
+fetchCountries(currentName).then(data=>{if(data.length>10){Notiflix.Notify.info('Too many matches found. Please enter a more specific name.')}else if(data.length===1){createMarkupDiv(data); listEl.classList.add('is-hidden');divEl.classList.remove('is-hidden')}else if(data.length<10||data.length!==1){createMarkupList(data);divEl.classList.add('is-hidden');listEl.classList.remove('is-hidden')}
+})
+.catch(error=>{Notiflix.Notify.warning('Такої країни не існує'); if(!currentName){
     cleanerdivEl();
     cleanerlistEl();
     return}}
